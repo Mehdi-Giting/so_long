@@ -12,12 +12,52 @@
 
 #include "../so_long.h"
 
-int	main(void)
+int	close_window(t_game *game)
 {
-	void	*mlx;
-	void	*mlx_window;
+	mlx_destroy_window(game->mlx, game->win);
+	free_tab(game->map);
+	exit(0);
+	return (0);
+}
 
-	mlx = mlx_init();
-	mlx_window = mlx_new_window(mlx, 1920, 1080, "Hello World!");
-	mlx_loop(mlx);
+void	cleanup_game(t_game *game)
+{
+	mlx_destroy_image(game->mlx, game->img_wall);
+	mlx_destroy_image(game->mlx, game->img_wall_side);
+	mlx_destroy_image(game->mlx, game->img_floor);
+	mlx_destroy_image(game->mlx, game->img_collectible);
+	mlx_destroy_image(game->mlx, game->img_exit_close);
+	mlx_destroy_image(game->mlx, game->img_player_on_ground);
+	mlx_destroy_image(game->mlx, game->img_player_on_grave);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+}
+
+int	main(int ac, char **av)
+{
+	t_game	game;
+
+	if (ac != 2)
+	{
+		ft_putstr_fd("Usage: ./so_long <map.ber>\n", 1);
+		return (1);
+	}
+	if (ac == 2)
+	{
+		if (!is_valid_map(av[1]))
+		{
+			ft_putstr_fd("Error\nInvalid map\n", 1);
+			return (1);
+		}
+		init_mlx(&game, av[1]);
+		load_textures(&game);
+		find_player_position(&game);
+		game.collectible_count = count_collectibles(game.map);
+		render(&game);
+		mlx_hook(game.win, 2, 1L << 0, on_key, &game);
+		mlx_hook(game.win, 17, 0, close_window, &game);
+		mlx_loop(game.mlx);
+		cleanup_game(&game);
+	}
+	return (0);
 }
