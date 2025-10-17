@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 05:33:14 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/16 06:54:09 by marvin           ###   ########.fr       */
+/*   Updated: 2025/10/16 23:35:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	move_player(t_game *game, int dx, int dy)
 	}
 	game->player_x = new_x;
 	game->player_y = new_y;
+	render(game);
 	game->step_count = game->step_count + 1;
 	ft_putnbr_fd(game->step_count, 1);
 	ft_putchar_fd('\n', 1);
-	render(game);
 }

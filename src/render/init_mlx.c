@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:11:24 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/16 06:51:04 by marvin           ###   ########.fr       */
+/*   Updated: 2025/10/16 23:37:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ int	count_collectibles(char **map)
 	return (count);
 }
 
+void	init_mlx_window(t_game *game)
+{
+	if ((ft_strlen(game->map[0]) * TILE_SIZE) > 960)
+		game->width = 960;
+	else
+		game->width = ft_strlen(game->map[0]) * TILE_SIZE;
+	if ((ft_tab_len(game->map) * TILE_SIZE) > 960)
+		game->heigth = 960;
+	else
+		game->heigth = ft_tab_len(game->map) * TILE_SIZE;
+}
+
 void	init_mlx(t_game *game, char *filename)
 {
 	game->map = read_file(filename);
@@ -42,8 +54,7 @@ void	init_mlx(t_game *game, char *filename)
 		ft_putstr_fd("Error\nFailed to load map\n", 1);
 		return ;
 	}
-	game->width = ft_strlen(game->map[0]) * TILE_SIZE;
-	game->heigth = ft_tab_len(game->map) * TILE_SIZE;
+	init_mlx_window(game);
 	game->mlx = mlx_init();
 	if (!game->mlx)
 	{

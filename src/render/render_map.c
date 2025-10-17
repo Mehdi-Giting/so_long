@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 00:11:31 by marvin            #+#    #+#             */
-/*   Updated: 2025/10/16 06:35:11 by marvin           ###   ########.fr       */
+/*   Updated: 2025/10/17 03:06:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,14 @@ void	render_tile(t_game *game, int x, int y)
 	if (c == '1')
 		render_tile_wall(game, x, y);
 	if (c == 'E')
-		mlx_put_image_to_window(game->mlx, game->win, game->img_exit_close,
-			x * TILE_SIZE, y * TILE_SIZE);
+	{
+		if (game->collectible_count == 0)
+			mlx_put_image_to_window(game->mlx, game->win, game->img_exit_open,
+				x * TILE_SIZE, y * TILE_SIZE);
+		else
+			mlx_put_image_to_window(game->mlx, game->win, game->img_exit_close,
+				x * TILE_SIZE, y * TILE_SIZE);
+	}
 }
 
 void	render(t_game *game)
@@ -63,17 +69,22 @@ void	render(t_game *game)
 	int	x;
 
 	y = 0;
-	while (game->map[y])
+	if (ft_strlen(game->map[0]) > 15 || ft_tab_len(game->map) > 15)
+		render_responsive(game);
+	else
 	{
-		x = 0;
-		while (game->map[y][x])
+		while (game->map[y])
 		{
-			mlx_put_image_to_window(game->mlx, game->win, game->img_floor,
-				x * TILE_SIZE, y * TILE_SIZE);
-			render_tile(game, x, y);
-			x++;
+			x = 0;
+			while (game->map[y][x])
+			{
+				mlx_put_image_to_window(game->mlx, game->win, game->img_floor,
+					x * TILE_SIZE, y * TILE_SIZE);
+				render_tile(game, x, y);
+				x++;
+			}
+			y++;
 		}
-		y++;
+		render_tile_player(game, game->player_x, game->player_y);
 	}
-	render_tile_player(game, game->player_x, game->player_y);
 }

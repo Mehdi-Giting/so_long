@@ -42,8 +42,12 @@ typedef struct s_game
 	int		heigth;
 	int		player_x;
 	int		player_y;
+	int		offset_x;
+	int		offset_y;
 	int		collectible_count;
 	int		step_count;
+	int 	sx;
+	int		sy;
 }	t_game;
 
 typedef struct s_count {
@@ -74,7 +78,8 @@ void	load_textures(t_game *game);
 
 //	render
 void	render(t_game *game);
-
+void	find_player_camera(t_game *game);
+void	render_responsive(t_game *game);
 // core
 void	find_player_position(t_game *game);
 

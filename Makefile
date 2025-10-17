@@ -19,6 +19,7 @@ LFLAGS      = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
 SRC         = $(RENDER_DIR)/init_mlx.c \
               $(RENDER_DIR)/render_map.c \
+			  $(RENDER_DIR)/found_camera.c \
               $(HOOK_DIR)/input.c \
               $(HOOK_DIR)/movement.c \
               $(CHK_DIR)/map_validation.c \
